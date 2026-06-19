@@ -1,0 +1,52 @@
+[
+    {
+      "id": 1,
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop",
+      "alt": "Tog' manzarasi",
+      "date": "19-iyun, 2026",
+      "category": "Sayohat",
+      "title": "Tog' cho'qqilarida ilhom: bir kunlik sarguzasht",
+      "description": "Tabiat qo'ynida o'tkazilgan bir kun inson qalbiga qanday xotiralar sovg'a qiladi? Tiniq havo va bulutlar uzra yo'l...",
+      "readMoreText": "Batafsil"
+    },
+    {
+      "id": 2,
+      "image": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop",
+      "alt": "Sog'lom taom",
+      "date": "15-iyun, 2026",
+      "category": "Ovqat",
+      "title": "Sog'lom nonushta: kunni to'g'ri boshlash sirlari",
+      "description": "Ertalabki taom nafaqat energiya balki kayfiyat manbai hamdir. Qanday mahsulotlar tanlash kerakligini bilasizmi?",
+      "readMoreText": "Batafsil"
+    },
+    {
+      "id": 3,
+      "image": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop",
+      "alt": "Dasturlash",
+      "date": "10-iyun, 2026",
+      "category": "Texnologiya",
+      "title": "2026-yilda eng ko'p talab qilinadigan dasturlash tillari",
+      "description": "Sun'iy intellekt va web sohasida qaysi tillar yetakchilik qilmoqda? Ish beruvchilar nimani kutmoqda?",
+      "readMoreText": "Batafsil"
+    },
+    {
+      "id": 4,
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop",
+      "alt": "Stol ustidagi taom",
+      "date": "1-iyun, 2026",
+      "category": "Ovqat",
+      "title": "Oshxonada ijod: yangi retseptlar bilan tanishamiz",
+      "description": "Oddiy mahsulotlardan ajoyib taomlar tayyorlash san'ati. Uyda restoran sifatini yaratish uchun maslahatlar.",
+      "readMoreText": "Batafsil"
+    },
+    {
+      "id": 5,
+      "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2070&auto=format&fit=crop",
+      "alt": "Sayohat chamadoni",
+      "date": "28-may, 2026",
+      "category": "Sayohat",
+      "title": "Sayohatga chiqishdan oldin bilish kerak bo'lgan 7 maslahat",
+      "description": "Yuklarni to'g'ri joylash, hujjatlar va yo'nalish rejasi bo'yicha foydali tavsiyalar to'plami.",
+      "readMoreText": "Batafsil"
+    }
+]
