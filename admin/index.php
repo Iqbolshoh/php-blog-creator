@@ -79,12 +79,12 @@ $blogs = json_decode(file_get_contents('../data/blogs.json'), true);
                                     <td>
                                         <div class="action-btns">
                                             <!-- Edit tugmasi -->
-                                            <a href="edit.php?id=<?= $i ?>" class="btn btn-edit">
+                                            <a href="edit.php?id=<?= $blog['id'] ?>" class="btn btn-edit">
                                                 <i class="fas fa-pen-to-square"></i> Tahrirlash
                                             </a>
                                             <!-- Delete form -->
                                             <form action="delete.php" method="POST" class="delete-form" onsubmit="return confirm('Rostdan ham ushbu blogni o\'chirmoqchimisiz?');">
-                                                <input type="hidden" name="id" value="<?= $i ?>">
+                                                <input type="hidden" name="id" value="<?= $blog['id'] ?>">
                                                 <button type="submit" class="btn btn-delete">
                                                     <i class="fas fa-trash-can"></i> O'chirish
                                                 </button>
