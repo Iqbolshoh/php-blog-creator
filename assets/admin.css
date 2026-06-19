@@ -1,0 +1,293 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+    background: #f7f4ef;
+    color: #3e2e21;
+    padding: 2rem 1.5rem;
+    min-height: 100vh;
+}
+
+.admin-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header qismi */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.admin-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3e2e21;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.admin-header h1 i {
+    color: #b08968;
+    background: #f0e6d8;
+    padding: 0.55rem;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+/* Tugmalar */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.3rem;
+    border-radius: 2.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+
+.btn i {
+    font-size: 0.85rem;
+}
+
+.btn-primary {
+    background: #4d3826;
+    color: #fef8f0;
+    box-shadow: 0 6px 16px rgba(75, 45, 25, 0.2);
+}
+
+.btn-primary:hover {
+    background: #5a3f2e;
+    box-shadow: 0 10px 22px rgba(75, 45, 25, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-edit {
+    background: #f0e6d8;
+    color: #5a3f2e;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+}
+
+.btn-edit:hover {
+    background: #e0cfb0;
+    transform: translateY(-1px);
+}
+
+.btn-delete {
+    background: #fce4e4;
+    color: #b53b3b;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+}
+
+.btn-delete:hover {
+    background: #f5c6c6;
+    transform: translateY(-1px);
+}
+
+.btn-logout {
+    background: transparent;
+    color: #7a6550;
+    border: 1.5px solid #d6c4ab;
+}
+
+.btn-logout:hover {
+    background: #f0e6d8;
+    border-color: #b08968;
+}
+
+.btn-back {
+    background: transparent;
+    color: #5a3f2e;
+    border: 1.5px solid #d6c4ab;
+}
+
+.btn-back:hover {
+    background: #f0e6d8;
+    border-color: #b08968;
+}
+
+/* Jadval konteyneri */
+.table-wrapper {
+    background: #ffffff;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(80, 50, 20, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(200, 170, 130, 0.18);
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+}
+
+thead {
+    background: #faf6f0;
+    border-bottom: 2px solid #e8ddd0;
+}
+
+thead th {
+    padding: 1rem 1.2rem;
+    text-align: left;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #8b6b4f;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+tbody tr {
+    border-bottom: 1px solid #f0eae0;
+    transition: background 0.2s;
+}
+
+tbody tr:hover {
+    background: #fdfaf5;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody td {
+    padding: 1rem 1.2rem;
+    vertical-align: middle;
+    font-size: 0.9rem;
+    color: #4a3a2c;
+}
+
+/* Rasm ustuni */
+.td-image img {
+    width: 65px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 0.6rem;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s;
+}
+
+.td-image img:hover {
+    transform: scale(2.5);
+    z-index: 10;
+    position: relative;
+}
+
+/* Sarlavha */
+.td-title {
+    font-weight: 600;
+    color: #3e2e21;
+    max-width: 200px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Tavsif */
+.td-desc {
+    max-width: 220px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #6b5a48;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Kategoriya badge */
+.category-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: #f5ede2;
+    color: #b08968;
+}
+
+/* Sanasi */
+.td-date {
+    white-space: nowrap;
+    color: #8b6b4f;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+/* Action tugmalar */
+.action-btns {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* Bo'sh holat */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #8b7a66;
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    color: #d6c4ab;
+    margin-bottom: 1rem;
+}
+
+/* Delete form inline */
+.delete-form {
+    display: inline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-header h1 {
+        font-size: 1.5rem;
+    }
+
+    table {
+        min-width: 750px;
+    }
+
+    thead th,
+    tbody td {
+        padding: 0.7rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
