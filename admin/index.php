@@ -30,7 +30,7 @@ $blogs = json_decode(file_get_contents('../data/blogs.json'), true);
                 Blog boshqaruvi
             </h1>
             <div class="header-actions">
-                <a href="dashboard.php" class="btn btn-back">
+                <a href="../" class="btn btn-back">
                     <i class="fas fa-arrow-left"></i> Orqaga
                 </a>
                 <a href="create.php" class="btn btn-primary">
