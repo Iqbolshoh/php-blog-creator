@@ -64,7 +64,15 @@ $blogs = json_decode(file_get_contents('../data/blogs.json'), true);
                                 <tr>
                                     <td><strong><?= $i + 1 ?></strong></td>
                                     <td class="td-image">
-                                        <img src="<?= htmlspecialchars($blog['image']) ?>" alt="<?= htmlspecialchars($blog['alt']) ?>">
+                                        <?php
+                                        if (file_exists('../' . $blog['image'])) {
+                                            $imageUrl = '../' . $blog['image'];
+                                        } else {
+                                            $imageUrl = $blog['image'];
+                                        }
+                                        ?>
+
+                                        <img src="<?= $imageUrl ?>" alt="<?= htmlspecialchars($blog['alt']) ?>">
                                     </td>
                                     <td class="td-date">
                                         <i class="far fa-calendar-alt" style="color:#b47c5a; margin-right:4px;"></i>

@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($blogs as $i => $b) {
         if ($b['id'] == $id) {
 
-            $imagePath = '../uploads/' . $b['image'];
+            $imagePath = '../' . $b['image'];
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
