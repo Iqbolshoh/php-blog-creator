@@ -65,37 +65,6 @@
             border-radius: 0.7rem;
         }
 
-        .main-nav {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .main-nav a {
-            text-decoration: none;
-            color: #5d4a38;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.3rem 0;
-            border-bottom: 2px solid transparent;
-        }
-
-        .main-nav a i {
-            font-size: 0.85rem;
-            color: #b08968;
-        }
-
-        .main-nav a:hover,
-        .main-nav a.active {
-            color: #3e2e21;
-            border-bottom-color: #c9a87c;
-        }
-
         .header-actions {
             display: flex;
             align-items: center;
@@ -328,58 +297,23 @@
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             flex-wrap: wrap;
             gap: 2rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
 
         .footer-brand p {
             color: #7a6550;
             font-size: 0.9rem;
-            margin-top: 0.4rem;
-            max-width: 280px;
+            max-width: 350px;
             line-height: 1.5;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-col h4 {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #3e2e21;
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-col ul {
-            list-style: none;
-        }
-
-        .footer-col ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-col ul li a {
-            text-decoration: none;
-            color: #6b5a48;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .footer-col ul li a i {
-            font-size: 0.7rem;
-            color: #b08968;
-        }
-
-        .footer-col ul li a:hover {
-            color: #3e2e21;
         }
 
         .footer-bottom {
@@ -428,11 +362,6 @@
                 align-items: flex-start;
             }
 
-            .main-nav {
-                gap: 1.2rem;
-                flex-wrap: wrap;
-            }
-
             .page-header h1 {
                 font-size: 2rem;
             }
@@ -444,10 +373,13 @@
 
             .footer-inner {
                 flex-direction: column;
+                align-items: flex-start;
             }
 
-            .footer-links {
-                gap: 2rem;
+            .footer-brand {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
             }
 
             .footer-bottom {
@@ -466,16 +398,6 @@
                 <i class="fas fa-feather-alt"></i>
                 <span>BlogMania</span>
             </a>
-
-            <nav>
-                <ul class="main-nav">
-                    <li><a href="#" class="active"><i class="fas fa-home"></i> Bosh sahifa</a></li>
-                    <li><a href="#"><i class="fas fa-compass"></i> Sayohat</a></li>
-                    <li><a href="#"><i class="fas fa-utensils"></i> Ovqat</a></li>
-                    <li><a href="#"><i class="fas fa-laptop-code"></i> Texnologiya</a></li>
-                    <li><a href="#"><i class="fas fa-book-open"></i> Kitob</a></li>
-                </ul>
-            </nav>
 
             <div class="header-actions">
                 <button class="btn-search" aria-label="Qidirish">
@@ -630,38 +552,6 @@
                 <p>Ilhomlantiruvchi hikoyalar, foydali maslahatlar va qiziqarli yangiliklar har kuni siz uchun.</p>
             </div>
 
-            <div class="footer-links">
-                <div class="footer-col">
-                    <h4>Bo'limlar</h4>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Sayohat</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Ovqat</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Texnologiya</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Kitob</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Kompaniya</h4>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Biz haqimizda</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Aloqa</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Maxfiylik siyosati</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Ijtimoiy tarmoqlar</h4>
-                    <ul>
-                        <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
-                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                        <li><a href="#"><i class="fab fa-telegram-plane"></i> Telegram</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <span>&copy; 2026 BlogMania. Barcha huquqlar himoyalangan.</span>
             <div class="social-icons">
                 <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
@@ -669,6 +559,10 @@
                 <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
                 <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>&copy; 2026 BlogMania. Barcha huquqlar himoyalangan.</span>
         </div>
     </footer>
 </body>
