@@ -5,6 +5,71 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
     header("Location: login.php");
     exit;
 }
+
+$errorMessage = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Validatsiya
+    if (empty($_FILES['image']['name'])) {
+        $errorMessage = "Rasmni tanlang!";
+    } elseif ($_FILES['image']['size'] > 5 * 1024 * 1024) {
+        $errorMessage = "Rasm hajmi 5 MB dan oshmasligi kerak!";
+    } elseif (empty($_POST['alt'])) {
+        $errorMessage = "Rasm uchun alt matni kiriting!";
+    } elseif (empty($_POST['date'])) {
+        $errorMessage = "Sana kiriting!";
+    } elseif (empty($_POST['category'])) {
+        $errorMessage = "Kategoriyani tanlang!";
+    } elseif (empty($_POST['title'])) {
+        $errorMessage = "Sarlavha kiriting!";
+    } elseif (empty($_POST['description'])) {
+        $errorMessage = "Tavsif kiriting!";
+    } elseif (empty($_POST['readMoreText'])) {
+        $errorMessage = "Batafsil tugmasi matnini kiriting!";
+    } else {
+        // Rasm yuklash
+        $fileName = time() . '_' . basename($_FILES['image']['name']);
+        $targetFile = '../uploads/' . $fileName;
+
+        if (!is_dir('../uploads/')) {
+            mkdir('../uploads/', 0755, true);
+        }
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
+            $blogs = json_decode(file_get_contents('../data/blogs.json'), true);
+
+            if (!is_array($blogs)) {
+                $blogs = [];
+            }
+
+            // Yangi ID: mavjud ID larning eng kattasidan 1 ta katta
+            $maxId = 0;
+            foreach ($blogs as $b) {
+                if (isset($b['id']) && (int)$b['id'] > $maxId) {
+                    $maxId = (int)$b['id'];
+                }
+            }
+            $newId = $maxId + 1;
+
+            $blogs[] = [
+                'id' => $newId,
+                'image' => 'uploads/' . $fileName,
+                'alt' => $_POST['alt'],
+                'date' => $_POST['date'],
+                'category' => $_POST['category'],
+                'title' => $_POST['title'],
+                'description' => $_POST['description'],
+                'readMoreText' => $_POST['readMoreText']
+            ];
+
+            file_put_contents('../data/blogs.json', json_encode($blogs, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            header("Location: index.php");
+            exit;
+        } else {
+            $errorMessage = "Faylni yuklashda xatolik yuz berdi!";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +84,16 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
 </head>
 
 <body>
+
+    <!-- Xatolik xabari -->
+    <?php if (!empty($errorMessage)): ?>
+        <div class="error-toast" id="errorToast">
+            <i class="fas fa-exclamation-circle"></i>
+            <?= htmlspecialchars($errorMessage) ?>
+            <button class="close-toast" onclick="document.getElementById('errorToast').remove()">&times;</button>
+        </div>
+    <?php endif; ?>
+
     <div class="form-container">
         <!-- Orqaga -->
         <a href="index.php" class="back-link">
@@ -51,7 +126,6 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
                             id="image"
                             name="image"
                             accept="image/jpeg, image/png, image/webp"
-                            required
                             onchange="previewFile()">
                     </div>
                     <img id="imagePreview" class="image-preview" alt="Rasm oldindan ko'rish">
@@ -71,7 +145,7 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
                         id="alt"
                         name="alt"
                         placeholder="Tog' manzarasi"
-                        required>
+                        value="<?= isset($_POST['alt']) ? htmlspecialchars($_POST['alt']) : '' ?>">
                 </div>
 
                 <!-- Sana -->
@@ -84,7 +158,7 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
                         id="date"
                         name="date"
                         placeholder="19-iyun, 2026"
-                        required>
+                        value="<?= isset($_POST['date']) ? htmlspecialchars($_POST['date']) : '' ?>">
                 </div>
 
                 <!-- Kategoriya -->
@@ -92,15 +166,15 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
                     <label for="category">
                         <i class="fas fa-folder"></i> Kategoriya
                     </label>
-                    <select id="category" name="category" required>
+                    <select id="category" name="category">
                         <option value="" disabled selected>Kategoriyani tanlang</option>
-                        <option value="Sayohat">Sayohat</option>
-                        <option value="Ovqat">Ovqat</option>
-                        <option value="Texnologiya">Texnologiya</option>
-                        <option value="Kitob">Kitob</option>
-                        <option value="Sport">Sport</option>
-                        <option value="Salomatlik">Salomatlik</option>
-                        <option value="Biznes">Biznes</option>
+                        <?php
+                        $categories = ['Sayohat', 'Ovqat', 'Texnologiya', 'Kitob', 'Sport', 'Salomatlik', 'Biznes'];
+                        foreach ($categories as $cat):
+                            $selected = (isset($_POST['category']) && $_POST['category'] === $cat) ? 'selected' : '';
+                        ?>
+                            <option value="<?= $cat ?>" <?= $selected ?>><?= $cat ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
@@ -114,7 +188,7 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
                         id="title"
                         name="title"
                         placeholder="Blog sarlavhasini kiriting"
-                        required>
+                        value="<?= isset($_POST['title']) ? htmlspecialchars($_POST['title']) : '' ?>">
                 </div>
 
                 <!-- Tavsif -->
@@ -125,8 +199,7 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
                     <textarea
                         id="description"
                         name="description"
-                        placeholder="Blog haqida qisqacha tavsif yozing..."
-                        required></textarea>
+                        placeholder="Blog haqida qisqacha tavsif yozing..."><?= isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '' ?></textarea>
                 </div>
 
                 <!-- Tugma matni -->
@@ -139,8 +212,7 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
                         id="readMoreText"
                         name="readMoreText"
                         placeholder="Batafsil"
-                        value="Batafsil"
-                        required>
+                        value="<?= isset($_POST['readMoreText']) ? htmlspecialchars($_POST['readMoreText']) : 'Batafsil' ?>">
                 </div>
             </div>
 
@@ -167,12 +239,10 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
             const file = fileInput.files[0];
 
             if (file) {
-                // Fayl nomini ko'rsatish
                 fileNameText.textContent = file.name;
                 fileNameEl.classList.add('show');
                 fileUploadArea.classList.add('has-file');
 
-                // Rasm oldindan ko'rish
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.src = e.target.result;
@@ -180,7 +250,6 @@ if (!isset($_SESSION['logined']) || $_SESSION['logined'] !== true) {
                 };
                 reader.readAsDataURL(file);
             } else {
-                // Tozalash
                 preview.classList.remove('show');
                 preview.src = '';
                 fileNameEl.classList.remove('show');

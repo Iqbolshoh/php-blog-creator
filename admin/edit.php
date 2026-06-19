@@ -12,19 +12,106 @@ if (!isset($_GET['id']) || $_GET['id'] === '') {
     exit;
 }
 
-$id = (int)$_GET['id'];
+$id = $_GET['id']; // String yoki integer bo'lishi mumkin
 $blogs = json_decode(file_get_contents('../data/blogs.json'), true);
 
+// Blogni ID bo'yicha topish
+$blog = null;
+$blogIndex = null;
 foreach ($blogs as $i => $b) {
-    if ($b['id'] === $id) {
+    if ((string)$b['id'] === (string)$id) {
         $blog = $b;
+        $blogIndex = $i;
         break;
     }
 }
 
+// Blog topilmasa
+if ($blog === null) {
+    header("Location: index.php");
+    exit;
+}
+
 $message = '';
 $messageType = '';
+$errorMessage = '';
 
+// Form yuborilganda
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validatsiya
+    if (empty($_POST['alt'])) {
+        $errorMessage = "Rasm uchun alt matni kiriting!";
+    } elseif (empty($_POST['date'])) {
+        $errorMessage = "Sana kiriting!";
+    } elseif (empty($_POST['category'])) {
+        $errorMessage = "Kategoriyani tanlang!";
+    } elseif (empty($_POST['title'])) {
+        $errorMessage = "Sarlavha kiriting!";
+    } elseif (empty($_POST['description'])) {
+        $errorMessage = "Tavsif kiriting!";
+    } elseif (empty($_POST['readMoreText'])) {
+        $errorMessage = "Batafsil tugmasi matnini kiriting!";
+    } else {
+        // Rasmni saqlash
+        $imagePath = $blog['image']; // Eski rasm
+
+        // Yangi rasm yuklangan bo'lsa
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK && !empty($_FILES['image']['name'])) {
+            // Fayl hajmi tekshirish
+            if ($_FILES['image']['size'] > 5 * 1024 * 1024) {
+                $errorMessage = "Rasm hajmi 5 MB dan oshmasligi kerak!";
+            } else {
+                // Eski rasmni o'chirish
+                if (!empty($blog['image']) && strpos($blog['image'], 'http') !== 0) {
+                    $oldFile = '../' . $blog['image'];
+                    if (file_exists($oldFile)) {
+                        unlink($oldFile);
+                    }
+                }
+
+                $fileName = time() . '_' . basename($_FILES['image']['name']);
+                $targetFile = '../uploads/' . $fileName;
+
+                if (!is_dir('../uploads/')) {
+                    mkdir('../uploads/', 0755, true);
+                }
+
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
+                    $imagePath = 'uploads/' . $fileName;
+                }
+            }
+        }
+
+        if (empty($errorMessage)) {
+            // Ma'lumotlarni yangilash
+            $blogs[$blogIndex] = [
+                'id' => $blog['id'],
+                'image' => $imagePath,
+                'alt' => $_POST['alt'],
+                'date' => $_POST['date'],
+                'category' => $_POST['category'],
+                'title' => $_POST['title'],
+                'description' => $_POST['description'],
+                'readMoreText' => $_POST['readMoreText']
+            ];
+
+            file_put_contents('../data/blogs.json', json_encode($blogs, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+            // Yangilangan blogni qayta o'qish
+            $blog = $blogs[$blogIndex];
+            $message = "Blog muvaffaqiyatli yangilandi!";
+            $messageType = "success";
+        }
+    }
+}
+
+// Rasm yo'lini aniqlash
+$imageSrc = $blog['image'];
+if (strpos($imageSrc, 'http') === 0) {
+    $displaySrc = $imageSrc;
+} else {
+    $displaySrc = '../' . $imageSrc;
+}
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +126,16 @@ $messageType = '';
 </head>
 
 <body>
+
+    <!-- Xatolik xabari -->
+    <?php if (!empty($errorMessage)): ?>
+        <div class="error-toast" id="errorToast">
+            <i class="fas fa-exclamation-circle"></i>
+            <?= htmlspecialchars($errorMessage) ?>
+            <button class="close-toast" onclick="document.getElementById('errorToast').remove()">&times;</button>
+        </div>
+    <?php endif; ?>
+
     <div class="form-container">
         <!-- Orqaga -->
         <a href="index.php" class="back-link">
@@ -51,14 +148,15 @@ $messageType = '';
                 <i class="fas fa-pen-to-square"></i>
             </div>
             <h1>Blogni tahrirlash</h1>
-            <p>ID: <?= $id ?> - "<?= htmlspecialchars($blog['title']) ?>"</p>
+            <p>ID: <?= htmlspecialchars($id) ?> - "<?= htmlspecialchars($blog['title']) ?>"</p>
         </div>
 
         <!-- Muvaffaqiyat xabari -->
         <?php if ($message): ?>
-            <div class="alert alert-success">
+            <div class="success-toast" id="successToast">
                 <i class="fas fa-check-circle"></i>
-                <?= $message ?>
+                <?= htmlspecialchars($message) ?>
+                <button class="close-toast" onclick="document.getElementById('successToast').remove()">&times;</button>
             </div>
         <?php endif; ?>
 
@@ -70,15 +168,6 @@ $messageType = '';
                     <label>
                         <i class="fas fa-image"></i> Joriy rasm
                     </label>
-                    <?php
-                    $imageSrc = $blog['image'];
-                    // Agar rasm URL bo'lsa to'g'ridan-to'g'ri, aks holda uploads papkasidan
-                    if (strpos($imageSrc, 'http') === 0) {
-                        $displaySrc = $imageSrc;
-                    } else {
-                        $displaySrc = '../' . $imageSrc;
-                    }
-                    ?>
                     <img
                         src="<?= htmlspecialchars($displaySrc) ?>"
                         alt="<?= htmlspecialchars($blog['alt']) ?>"
@@ -123,8 +212,7 @@ $messageType = '';
                         id="alt"
                         name="alt"
                         placeholder="Tog' manzarasi"
-                        value="<?= htmlspecialchars($blog['alt']) ?>"
-                        required>
+                        value="<?= htmlspecialchars($blog['alt']) ?>">
                 </div>
 
                 <!-- Sana -->
@@ -137,8 +225,7 @@ $messageType = '';
                         id="date"
                         name="date"
                         placeholder="19-iyun, 2026"
-                        value="<?= htmlspecialchars($blog['date']) ?>"
-                        required>
+                        value="<?= htmlspecialchars($blog['date']) ?>">
                 </div>
 
                 <!-- Kategoriya -->
@@ -146,7 +233,7 @@ $messageType = '';
                     <label for="category">
                         <i class="fas fa-folder"></i> Kategoriya
                     </label>
-                    <select id="category" name="category" required>
+                    <select id="category" name="category">
                         <option value="" disabled>Kategoriyani tanlang</option>
                         <?php
                         $categories = ['Sayohat', 'Ovqat', 'Texnologiya', 'Kitob', 'Sport', 'Salomatlik', 'Biznes'];
@@ -168,8 +255,7 @@ $messageType = '';
                         id="title"
                         name="title"
                         placeholder="Blog sarlavhasini kiriting"
-                        value="<?= htmlspecialchars($blog['title']) ?>"
-                        required>
+                        value="<?= htmlspecialchars($blog['title']) ?>">
                 </div>
 
                 <!-- Tavsif -->
@@ -180,8 +266,7 @@ $messageType = '';
                     <textarea
                         id="description"
                         name="description"
-                        placeholder="Blog haqida qisqacha tavsif yozing..."
-                        required><?= htmlspecialchars($blog['description']) ?></textarea>
+                        placeholder="Blog haqida qisqacha tavsif yozing..."><?= htmlspecialchars($blog['description']) ?></textarea>
                 </div>
 
                 <!-- Tugma matni -->
@@ -194,8 +279,7 @@ $messageType = '';
                         id="readMoreText"
                         name="readMoreText"
                         placeholder="Batafsil"
-                        value="<?= htmlspecialchars($blog['readMoreText']) ?>"
-                        required>
+                        value="<?= htmlspecialchars($blog['readMoreText']) ?>">
                 </div>
             </div>
 
@@ -213,6 +297,8 @@ $messageType = '';
 
     <!-- JavaScript -->
     <script>
+        const originalSrc = "<?= htmlspecialchars($displaySrc) ?>";
+
         function previewFile() {
             const fileInput = document.getElementById('image');
             const currentImage = document.getElementById('currentImage');
@@ -222,23 +308,19 @@ $messageType = '';
             const file = fileInput.files[0];
 
             if (file) {
-                // Fayl nomini ko'rsatish
                 fileNameText.textContent = file.name;
                 fileNameIndicator.classList.add('show');
                 fileUploadArea.classList.add('has-file');
 
-                // Joriy rasm o'rniga yangi rasmni ko'rsatish
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     currentImage.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             } else {
-                // Qayta tiklash
                 fileNameIndicator.classList.remove('show');
                 fileUploadArea.classList.remove('has-file');
-                // Asl rasmga qaytish
-                currentImage.src = "<?= htmlspecialchars($displaySrc) ?>";
+                currentImage.src = originalSrc;
             }
         }
     </script>
