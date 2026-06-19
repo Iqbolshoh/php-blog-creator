@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             unset($blogs[$i]);
+            $blogs = array_values($blogs);
             file_put_contents('../data/blogs.json', json_encode($blogs));
             header("Location: index.php");
             exit;
